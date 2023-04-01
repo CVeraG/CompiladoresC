@@ -25,7 +25,7 @@ public class AFN
     HashSet<Estado> EdosAFN = new HashSet<Estado>();
     HashSet<Estado> EdosAcept = new HashSet<Estado>();
     HashSet<char> Alfabeto = new HashSet<char>();
-    // bool SeAgregoAFNUnionLexico;
+    bool SeAgregoAFNUnionLexico;
     public int IdAFN;
     public AFN()
     {
@@ -229,6 +229,30 @@ public class AFN
         return R;
     }
 
+    public HashSet<Estado> CerraduraEpsilon(HashSet<Estado> ConjEdos)
+    {
+        HashSet<Estado> R = new HashSet<Estado>();
+        Stack<Estado> S = new Stack<Estado>();
+        Estado aux, Edo;
+        R.Clear();
+        S.Clear();
+        foreach (Estado e in ConjEdos)
+        {
+            S.Push(e);
+        }    
+        while (S.Count != 0)
+        {
+            aux = S.Pop();
+            R.Add(aux);
+            foreach (Transicion t in aux.Trans)
+                if ((Edo = t.GetEdoTrans(SimbolosEspeciales.EPSILON)) != null)
+                    if (!R.Contains(Edo))
+                        S.Push(Edo);
+
+        }
+        return R;
+    }
+
     public HashSet<Estado> Mover(Estado Edo, char Simb)
     {
         HashSet<Estado> C = new HashSet<Estado>();
@@ -243,6 +267,7 @@ public class AFN
         }
         return C;
     }
+
 
     public HashSet<Estado> Mover(HashSet<Estado> Edos, char Simb)
     {
@@ -259,10 +284,110 @@ public class AFN
         return C;
     }
 
+    public HashSet<Estado> Ir_A(HashSet<Estado> Edos, char Simb)
+    {
+    HashSet<Estado> C = new HashSet<Estado>();
+    C.Clear();
+    C=CerraduraEpsilon(ConjEdos: Mover(Edos, Simb));
+    return C;
+    }
+    public void UnionEspecialAFNs(AFN f, int Token)
+    {
+        Estado e;
+        if (!this.SeAgregoAFNUnionLexico)
+        {
+            this.EdosAFN.Clear();
+            this.EdosAFN.Clear();
+            this.Alfabeto.Clear();
+            e = new Estado();
+            e.Trans.Add(new Transicion(SimbolosEspeciales.EPSILON, f.EdoIni));
+            this.EdoIni = e;
+            this.EdosAFN.Add(e);
+            this.SeAgregoAFNUnionLexico = true;
+        
+        }
+           
+        else
+             this.EdoIni.Trans.Add(new Transicion(SimbolosEspeciales.EPSILON, f.EdoIni));
+        foreach (Estado EdoAcep in f.EdosAcept)
+            EdoAcep.Token = Token;
+        this.EdosAcept.UnionWith(f.EdosAcept);
+        this.EdosAFN.UnionWith(f.EdosAFN);
+        this.Alfabeto.UnionWith(f.Alfabeto);
+    }
 
+    private int IndiceCaracter(char[] ArregloAlfabeto, char c) //No se debe de usar
+    {
+        int i;
+        for (i = 0; i < ArregloAlfabeto.Length; i++)
+            if (ArregloAlfabeto[i] == c)
+                return i;
 
+        return -1;
+    }
+    public AFD ConvAFNaAFD()
+    {
+        int Cardalfabeto, NumEdosAFD;
+        int i, j, r;
+        char[] ArrAlfabeto;
+        ConjIj Ij, Ik;
+        bool existe;
+        HashSet < Estado> ConjaAux = new HashSet<Estado>();
+        HashSet<ConjIj> EdosAFD = new HashSet<ConjIj>() ;
+        Queue<ConjIj> EdosSinAnalizar = new Queue<ConjIj>();
+        EdosAFD.Clear();
+        EdosSinAnalizar.Clear();
+        Cardalfabeto = Alfabeto.Count;
+        ArrAlfabeto = new char[Cardalfabeto];
+        i = 0;
+        foreach (char c in Alfabeto)
+            ArrAlfabeto[i++] = c;
+        j = 0; //Contador para los estados del AFD
+        Ij = new ConjIj(Cardalfabeto)
+        {
+            ConjI = CerraduraEpsilon(this.EdoIni),
+            j = j
+        };
+        EdosAFD.Add(Ij);
+        EdosSinAnalizar.Enqueue(Ij);
+        j++;
+        while(EdosSinAnalizar.Count != 0)
+        {
+            Ij = EdosSinAnalizar.Dequeue();
+            //Calcular el IrA del Ij con cada simbolo del alfabeto
+            foreach(char c in ArrAlfabeto)
+            {
+                Ik = new ConjIj(Cardalfabeto)
+                {
+                    ConjI = Ir_A(Ij.ConjI, c)
+                };
+                if (Ik.ConjI.Count == 0)
+                    continue;
+                existe = false;
+                foreach(ConjIj I in EdosAFD)
+                {
+                    if (I.ConjI.SetEquals(Ik.ConjI))
+                    {
+                        existe = true;
+                        r = IndiceCaracter(ArrAlfabeto, c);
+                        Ij.TransicionesAFD[r] = I.j;
+                        break;
+                    }
+                }
+                if (!existe)
+                {
+                    Ik.j = j;
+                    r = IndiceCaracter(ArrAlfabeto, c);
+                    Ij.TransicionesAFD[r] = Ik.j;
+                    EdosAFD.Add(Ik);
+                    EdosSinAnalizar.Enqueue(Ik);
+                    j++;
 
+                }
 
-
+            }
+        }
+        NumEdosAFD = j;
+    }
 
 }
