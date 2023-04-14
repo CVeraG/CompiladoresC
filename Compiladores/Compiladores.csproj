@@ -86,6 +86,12 @@
     <Compile Include="FormOpc.Designer.cs">
       <DependentUpon>FormOpc.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormUnionEsp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormUnionEsp.Designer.cs">
+      <DependentUpon>FormUnionEsp.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormUnir.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormOpc.resx">
       <DependentUpon>FormOpc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormUnionEsp.resx">
+      <DependentUpon>FormUnionEsp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormUnir.resx">
       <DependentUpon>FormUnir.cs</DependentUpon>

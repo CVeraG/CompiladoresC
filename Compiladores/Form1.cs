@@ -57,5 +57,11 @@ namespace Compiladores
             Form Formulario = new FormOpc();
             Formulario.Show();
         }
+
+        private void unionParaAnalizadorSintacticoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form Formulario = new FormUnionEsp();
+            Formulario.Show();
+        }
     }
 }

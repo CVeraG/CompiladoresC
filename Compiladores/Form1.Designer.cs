@@ -131,6 +131,7 @@
             this.unionParaAnalizadorSintacticoToolStripMenuItem.Name = "unionParaAnalizadorSintacticoToolStripMenuItem";
             this.unionParaAnalizadorSintacticoToolStripMenuItem.Size = new System.Drawing.Size(366, 34);
             this.unionParaAnalizadorSintacticoToolStripMenuItem.Text = "Union para analizador sintactico";
+            this.unionParaAnalizadorSintacticoToolStripMenuItem.Click += new System.EventHandler(this.unionParaAnalizadorSintacticoToolStripMenuItem_Click);
             // 
             // convertirAFNAAFDToolStripMenuItem
             // 

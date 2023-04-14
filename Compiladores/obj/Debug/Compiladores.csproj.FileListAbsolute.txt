@@ -15,3 +15,4 @@ C:\Users\crist\OneDrive\Escritorio\Compiladores\Compiladores\Compiladores\obj\De
 C:\Users\crist\OneDrive\Escritorio\Compiladores\Compiladores\Compiladores\obj\Debug\Compiladores.FormCerrKleen.resources
 C:\Users\crist\OneDrive\Escritorio\Compiladores\Compiladores\Compiladores\obj\Debug\Compiladores.FormCerrPos.resources
 C:\Users\crist\OneDrive\Escritorio\Compiladores\Compiladores\Compiladores\obj\Debug\Compiladores.FormOpc.resources
+C:\Users\crist\OneDrive\Escritorio\Compiladores\Compiladores\Compiladores\obj\Debug\Compiladores.FormUnionEsp.resources

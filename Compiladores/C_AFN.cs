@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Compiladores;
 
 public class ConjIj
@@ -12,8 +13,8 @@ public class ConjIj
         j = -1;
         ConjI = new HashSet<Estado>();
         ConjI.Clear();
-        TransicionesAFD = new int[CardAlf + 1];
-        for (int k = 0; k <= CardAlf; k++)
+        TransicionesAFD = new int[256];
+        for (int k = 0; k <= 256; k++)
             TransicionesAFD[k] = -1;
     }
 }
@@ -34,7 +35,7 @@ public class AFN
         EdosAFN.Clear();
         EdosAcept.Clear();
         Alfabeto.Clear();
-        //SeAgregoAFNUnionLexico = false;
+        SeAgregoAFNUnionLexico = false;
     }
 
     public AFN CrearAFNBasico(char s)
@@ -293,6 +294,7 @@ public class AFN
     }
     public void UnionEspecialAFNs(AFN f, int Token)
     {
+        Console.WriteLine("entre a especial");
         Estado e;
         if (!this.SeAgregoAFNUnionLexico)
         {
@@ -316,24 +318,16 @@ public class AFN
         this.Alfabeto.UnionWith(f.Alfabeto);
     }
 
-    private int IndiceCaracter(char[] ArregloAlfabeto, char c) //No se debe de usar
-    {
-        int i;
-        for (i = 0; i < ArregloAlfabeto.Length; i++)
-            if (ArregloAlfabeto[i] == c)
-                return i;
-
-        return -1;
-    }
+    
     public AFD ConvAFNaAFD()
-    {
+        {
         int Cardalfabeto, NumEdosAFD;
         int i, j, r;
         char[] ArrAlfabeto;
         ConjIj Ij, Ik;
         bool existe;
-        HashSet < Estado> ConjaAux = new HashSet<Estado>();
-        HashSet<ConjIj> EdosAFD = new HashSet<ConjIj>() ;
+        HashSet<Estado> ConjaAux = new HashSet<Estado>();
+        HashSet<ConjIj> EdosAFD = new HashSet<ConjIj>();
         Queue<ConjIj> EdosSinAnalizar = new Queue<ConjIj>();
         EdosAFD.Clear();
         EdosSinAnalizar.Clear();
@@ -351,11 +345,11 @@ public class AFN
         EdosAFD.Add(Ij);
         EdosSinAnalizar.Enqueue(Ij);
         j++;
-        while(EdosSinAnalizar.Count != 0)
+        while (EdosSinAnalizar.Count != 0)
         {
             Ij = EdosSinAnalizar.Dequeue();
             //Calcular el IrA del Ij con cada simbolo del alfabeto
-            foreach(char c in ArrAlfabeto)
+            foreach (char c in ArrAlfabeto)
             {
                 Ik = new ConjIj(Cardalfabeto)
                 {
@@ -364,12 +358,12 @@ public class AFN
                 if (Ik.ConjI.Count == 0)
                     continue;
                 existe = false;
-                foreach(ConjIj I in EdosAFD)
+                foreach (ConjIj I in EdosAFD)
                 {
                     if (I.ConjI.SetEquals(Ik.ConjI))
                     {
                         existe = true;
-                        r = IndiceCaracter(ArrAlfabeto, c);
+                        r = (int)c;
                         Ij.TransicionesAFD[r] = I.j;
                         break;
                     }
@@ -377,17 +371,56 @@ public class AFN
                 if (!existe)
                 {
                     Ik.j = j;
-                    r = IndiceCaracter(ArrAlfabeto, c);
+                    r = (int)c;
                     Ij.TransicionesAFD[r] = Ik.j;
                     EdosAFD.Add(Ik);
                     EdosSinAnalizar.Enqueue(Ik);
                     j++;
-
                 }
 
             }
         }
         NumEdosAFD = j;
+        int fila = 0;
+        AFD afd = new AFD(NumEdosAFD);
+        int[,] tablaEdos = new int[NumEdosAFD, 256];
+        foreach (ConjIj I in EdosAFD)
+        {
+            HashSet<Estado> es = new HashSet<Estado>(I.ConjI.Intersect(this.EdosAcept));
+            if (es.Count != 0)
+            {
+               AFD.IjAcept.Add(I);
+            }
+
+            for (int x = 0; x <= 256; x++)
+            {
+                tablaEdos[fila, x] = I.TransicionesAFD[x];
+            }
+            fila++;
+
+        }
+        
+        afd.tablaEdos = tablaEdos;
+        return afd;
+        }
+    
+}
+
+public class AFD
+{
+    public int IdAFD;
+    public int[,] tablaEdos;
+    public static HashSet<ConjIj> IjAcept = new HashSet<ConjIj>();
+    public int Token;
+    public AFD(int NumIj)
+    {
+        tablaEdos = new int[NumIj, 256];
+        IdAFD = 0;
+        IjAcept.Clear();
+        Token = -1;
     }
 
+    
 }
+    
+
