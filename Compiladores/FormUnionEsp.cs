@@ -74,7 +74,7 @@ namespace Compiladores
             
             }
             Especial.ConvAFNaAFD();
-            
+            this.Close();
         }
     }
 }

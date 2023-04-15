@@ -63,5 +63,11 @@ namespace Compiladores
             Form Formulario = new FormUnionEsp();
             Formulario.Show();
         }
+
+        private void convertirAFNAAFDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form Formulario = new FormAFN_AFD();
+            Formulario.Show();
+        }
     }
 }
