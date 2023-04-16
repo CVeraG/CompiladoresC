@@ -62,6 +62,18 @@
     <Compile Include="FormAFNBasico.Designer.cs">
       <DependentUpon>FormAFNBasico.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAFN_AFD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAFN_AFD.Designer.cs">
+      <DependentUpon>FormAFN_AFD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAnalizarCadena.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAnalizarCadena.Designer.cs">
+      <DependentUpon>FormAnalizarCadena.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormCerrKleen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +117,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAFNBasico.resx">
       <DependentUpon>FormAFNBasico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAFN_AFD.resx">
+      <DependentUpon>FormAFN_AFD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAnalizarCadena.resx">
+      <DependentUpon>FormAnalizarCadena.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormCerrKleen.resx">
       <DependentUpon>FormCerrKleen.cs</DependentUpon>
