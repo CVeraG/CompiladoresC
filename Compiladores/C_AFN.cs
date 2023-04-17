@@ -384,13 +384,13 @@ public class AFN
         int fila = 0;
         AFD afd = new AFD(NumEdosAFD);
         AFD.edosAFD = NumEdosAFD;
-        int[,] tablaEdos = new int[NumEdosAFD, 256];
+        int[,] tablaEdos = new int[NumEdosAFD, 257];
         foreach (ConjIj I in EdosAFD)
         {
             HashSet<Estado> es = new HashSet<Estado>(I.ConjI.Intersect(this.EdosAcept));
             if (es.Count != 0)
             {
-               AFD.IjAcept.Add(I);
+               AFD.IjAcept.Add(I);   
             }
 
             for (int x = 0; x < 256; x++)
@@ -400,9 +400,9 @@ public class AFN
             fila++;
 
         }
-        
         afd.tablaEdos = tablaEdos;
         AFD.tablaAFD = tablaEdos;
+        
         return afd;
         }
     
@@ -414,19 +414,16 @@ public class AFD
     public int[,] tablaEdos;
     public static int[,] tablaAFD;
     public static int edosAFD;
+    public static int[] tokens;
     public static HashSet<ConjIj> IjAcept = new HashSet<ConjIj>();
     public int Token;
     public AFD(int NumIj)
     {
-        tablaEdos = new int[NumIj, 256];
+        tablaEdos = new int[NumIj, 257];
+        tokens = new int[NumIj];
         IdAFD = 0;
         IjAcept.Clear();
         Token = -1;
-    }
-
-    public int[,] GetTablaEdos()
-    {
-        return tablaEdos;
     }
 
 }

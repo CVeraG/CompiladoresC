@@ -24,6 +24,7 @@ namespace Compiladores
 
         private void btnAnalizar_Click(object sender, EventArgs e)
         {
+            
             string cadena = txtCadena.Text;
             char[] arreglo = new char[cadena.Length];
             arreglo = cadena.ToCharArray();
@@ -34,7 +35,7 @@ namespace Compiladores
             {
                 if (AFD.tablaAFD[edoActual, (int)cadena[i]] != -1)
                 {
-                    edoActual = AFD.tablaAFD[edoActual, (int)cadena[i]];
+                    edoActual = AFD.tablaAFD[edoActual, (int)cadena[i]] - 1;
                 }
                 else
                 {

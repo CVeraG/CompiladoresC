@@ -48,6 +48,7 @@ namespace Compiladores
 
         private void button1_Click(object sender, EventArgs e)
         {
+            int i = 0;
             List<string> listaAFN = new List<string>();
             foreach ( string item in checkedListBox1.Items)
             {
@@ -74,6 +75,28 @@ namespace Compiladores
             
             }
             Especial.ConvAFNaAFD();
+            foreach (var afn in AFN.ConjDeAFNs)
+            {
+                foreach (string ID in listaAFN)
+                {
+                    if (Int32.Parse(ID) == afn.IdAFN)
+                    {
+                        foreach (Control control in panel1.Controls)
+                        {
+                            if (Int32.Parse(control.Name) == afn.IdAFN)
+                            {
+                                AFD.tokens[i] = Int32.Parse(control.Text);
+                                i++;
+                            }
+                        }
+                    }
+                }
+
+            }
+            for (int k = 0; k < AFD.edosAFD; k++)
+            {
+                AFD.tablaAFD[k, 256] = AFD.tokens[k];
+            }
             this.Close();
         }
     }
